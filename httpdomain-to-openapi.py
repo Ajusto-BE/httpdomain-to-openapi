@@ -57,8 +57,8 @@ def get_routes(app):
 def main():
     if len(sys.argv) < 2:
         print('''
-            Usage: python __init__.py <flask_app_import_name>
-            .e.g python __init__.py my_app:app
+            Usage: python httpdomain-to-openapi.py <flask_app_import_name>
+            .e.g python httpdomain-to-openapi.py my_app:app
         ''')
 
     import_name = sys.argv[1]
