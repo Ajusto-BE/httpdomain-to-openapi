@@ -1,3 +1,4 @@
+from collections import defaultdict
 import builtins
 import functools
 import io
@@ -15,53 +16,42 @@ def import_object(import_name):
     return eval(expr, globals, mod.__dict__)
 
 
-def cleanup_methods(methods):
+def clean_up_methods(methods):
     autoadded_methods = frozenset(['OPTIONS', 'HEAD'])
     if methods <= autoadded_methods:
         return methods
     return methods.difference(autoadded_methods)
 
 
-def translate_werkzeug_rule(rule):
-    from werkzeug.routing import parse_rule
-    buf = io.StringIO()
-    for conv, arg, var in parse_rule(rule):
-        if conv:
-            buf.write('(')
-            if conv != 'default':
-                buf.write(conv)
-                buf.write(':')
-            buf.write(var)
-            buf.write(')')
-        else:
-            buf.write(var)
-    return buf.getvalue()
-
-
-def get_routes(app, endpoint=None, order=None):
+def get_routes(app):
     endpoints = []
-    for rule in app.url_map.iter_rules(endpoint):
-        url_with_endpoint = (
-            str(next(app.url_map.iter_rules(rule.endpoint))),
-            rule.endpoint
-        )
+
+    for rule in app.url_map.iter_rules():
+        url = str(next(app.url_map.iter_rules(rule.endpoint)))
+
+        # Exclude static endpoint
+        static_url_path = app.static_url_path
+        if rule.endpoint == 'static' and url.startswith(static_url_path):
+            continue
+
+        url_with_endpoint = (url, rule.endpoint)
         if url_with_endpoint not in endpoints:
             endpoints.append(url_with_endpoint)
-    if order == 'path':
-        endpoints.sort()
-    endpoints = [e for _, e in endpoints]
-    for endpoint in endpoints:
-        methodrules = {}
-        for rule in app.url_map.iter_rules(endpoint):
-            methods = cleanup_methods(rule.methods)
-            path = translate_werkzeug_rule(rule.rule)
-            for method in methods:
-                if method in methodrules:
-                    methodrules[method].append(path)
-                else:
-                    methodrules[method] = [path]
+
+    endpoints.sort()
+
+    unique_view_fn_names = [e for _, e in endpoints]
+
+    for view_fn_name in unique_view_fn_names:
+        methodrules = defaultdict(list)
+        for rule in app.url_map.iter_rules(view_fn_name):
+            path = rule.rule
+            for method in clean_up_methods(rule.methods):
+                methodrules[method].append(path)
         for method, paths in methodrules.items():
-            yield method, paths, endpoint
+            view_fn = app.view_functions[view_fn_name]
+            view_doc = view_fn.__doc__
+            yield method, paths, view_fn_name, view_doc
 
 
 def main():
@@ -73,12 +63,17 @@ def main():
 
     import_name = sys.argv[1]
     app = import_object(import_name)
-    for route in get_routes(app):
-        print(route)
+    routes = get_routes(app)
+    for method, paths, view_fn_name, view_doc in routes:
+        print(f'{method} {paths} {view_fn_name}')
+        print(view_doc)
+        print('-------')
+        pass
 
 
 if __name__ == '__main__':
-    APP_DIR = '../50five-nl-backend/'
+    # APP_DIR = '../50five-nl-backend/'
+    APP_DIR = '../docs-demo-openapi/'
     sys.path.insert(0, os.path.abspath(APP_DIR))
     os.chdir(APP_DIR)
     main()

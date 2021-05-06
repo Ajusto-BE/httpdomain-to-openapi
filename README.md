@@ -3,6 +3,17 @@
 Generates OpenAPI documentation from code documented according to the
 [httpdomain syntax](https://sphinxcontrib-httpdomain.readthedocs.io/en/stable/).
 
+## Limitations
+
+This program does not cover certain Flask functionality such as
+[pluggable views](https://flask.palletsprojects.com/en/1.1.x/views/)
+and most likely blueprints.
+
+Support for this could be quite straightfowardly by consulting the,
+`sphinxcontrib-httpdomain` source, in particular `flask_base.py`.
+However, this functionality was not needed when writing
+`httpdomain-to-openapi` for its initial use case.
+
 ## Acknowledgements
 
 Author: [Vlad-Stefan Harbuz](https://github.com/vladh)
