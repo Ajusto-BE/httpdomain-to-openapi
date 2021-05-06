@@ -5,7 +5,7 @@ Generates OpenAPI documentation from code documented according to the
 
 ## Acknowledgements
 
-Author: [Vlad-Stefan Harbuz](@vladh).
+Author: [Vlad-Stefan Harbuz](https://github.com/vladh)
 
 Some code is adapted from
 [sphinxcontrib-httpdomain](https://github.com/sphinx-contrib/httpdomain).
