@@ -115,6 +115,10 @@ def remove_start_and_end_empty_strings(lines):
     return lines
 
 
+def make_openapi_operation_parts_from_directive(directive):
+    return {'lol': 'hi'}
+
+
 def make_openapi_operation_object(view_docstring):
     lines = prepare_docstring(view_docstring)
     directive_lines = remove_start_and_end_empty_strings(
@@ -125,13 +129,22 @@ def make_openapi_operation_object(view_docstring):
     )
     summary_line = non_directive_lines[0]
     description_lines = remove_start_and_end_empty_strings(non_directive_lines[1:])
-    print('\n'.join(directive_lines))
-    print('------------------------------------')
 
-    return {
+    openapi_operation = {
         'summary': summary_line,
         'description': '\n'.join(description_lines),
     }
+
+    print('\n'.join(directive_lines))
+    print('------------------------------------')
+
+    for directive_line in directive_lines:
+        new_operation_parts = make_openapi_operation_parts_from_directive(
+            directive_line
+        )
+        openapi_operation = {**openapi_operation, **new_operation_parts}
+
+    return openapi_operation
 
 
 def build_openapi_dict(routes):
