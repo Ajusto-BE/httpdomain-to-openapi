@@ -4,6 +4,7 @@ import functools
 import io
 import os
 import sys
+import yaml
 
 
 def import_object(import_name):
@@ -50,8 +51,8 @@ def get_routes(app):
                 methodrules[method].append(path)
         for method, paths in methodrules.items():
             view_fn = app.view_functions[view_fn_name]
-            view_doc = view_fn.__doc__
-            yield method, paths, view_fn_name, view_doc
+            view_docstring = view_fn.__doc__
+            yield method, paths, view_fn_name, view_docstring
 
 
 def print_usage_and_exit():
@@ -62,6 +63,38 @@ def print_usage_and_exit():
     sys.exit(1)
 
 
+def make_openapi_operation_object(view_docstring):
+    return {
+        'da': 'da!',
+    }
+
+
+def build_openapi_dict(routes):
+    # TODO: Add support for title as parameter
+    # TODO: Add support for version as parameter
+    openapi_dict = {
+        'openapi': '3.0.0',
+        'info': {
+            'title': 'My cool API!',
+            'version': '1',
+        },
+        'paths': {},
+    }
+
+    for method, paths, view_fn_name, view_docstring in routes:
+        for path in paths:
+            if path not in openapi_dict['paths']:
+                openapi_dict['paths'][path] = {}
+            openapi_dict['paths'][path][method.lower()] = \
+                make_openapi_operation_object(view_docstring)
+
+    return openapi_dict
+
+
+def print_openapi_dict(openapi_dict):
+    yaml.dump(openapi_dict, sys.stdout)
+
+
 def main():
     if len(sys.argv) < 2:
         print_usage_and_exit()
@@ -69,11 +102,8 @@ def main():
     import_name = sys.argv[1]
     app = import_object(import_name)
     routes = get_routes(app)
-    for method, paths, view_fn_name, view_doc in routes:
-        print(f'{method} {paths} {view_fn_name}')
-        print(view_doc)
-        print('-------')
-        pass
+    openapi_dict = build_openapi_dict(routes)
+    print_openapi_dict(openapi_dict)
 
 
 if __name__ == '__main__':
