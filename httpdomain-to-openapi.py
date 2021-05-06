@@ -54,12 +54,17 @@ def get_routes(app):
             yield method, paths, view_fn_name, view_doc
 
 
+def print_usage_and_exit():
+    print('''
+        Usage: python httpdomain-to-openapi.py <flask_app_import_name>
+            e.g python httpdomain-to-openapi.py my_app:app
+    ''')
+    sys.exit(1)
+
+
 def main():
     if len(sys.argv) < 2:
-        print('''
-            Usage: python httpdomain-to-openapi.py <flask_app_import_name>
-            .e.g python httpdomain-to-openapi.py my_app:app
-        ''')
+        print_usage_and_exit()
 
     import_name = sys.argv[1]
     app = import_object(import_name)
