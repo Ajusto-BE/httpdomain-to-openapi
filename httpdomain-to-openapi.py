@@ -115,6 +115,10 @@ def remove_start_and_end_empty_strings(lines):
     return lines
 
 
+def parse_directive(directive_line):
+    return directive_line
+
+
 def make_openapi_operation_parts_from_directive(directive):
     return {'lol': 'hi'}
 
@@ -139,9 +143,8 @@ def make_openapi_operation_object(view_docstring):
     print('------------------------------------')
 
     for directive_line in directive_lines:
-        new_operation_parts = make_openapi_operation_parts_from_directive(
-            directive_line
-        )
+        directive = parse_directive(directive_line)
+        new_operation_parts = make_openapi_operation_parts_from_directive(directive)
         openapi_operation = {**openapi_operation, **new_operation_parts}
 
     return openapi_operation
