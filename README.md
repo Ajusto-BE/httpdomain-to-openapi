@@ -5,7 +5,22 @@ Generates OpenAPI documentation from code documented according to the
 
 ## Usage
 
-To do: fill in!
+Modify the path mentioned in APP_DIR variable from *httpdomain-to-openapi.py* file to match the location of the Flask app directory from your local machine
+- Run *httpdomain-to-openapi.py* file with Python
+```
+python3 httpdomain-to-openapi.py --app app_example:app --title '50 Five' --version v5.25.0
+```
+
+**Command options** detailed:
+1. -a, --app
+- *required*: mendatory
+- *description*: indicates the Flask app for which to collect the endpoints that need to be documented according the OpenAPI Specification
+2. -t, --title
+- *required*: optional
+- *description*: adds a given title to the generated OpenAPI documentation
+3. -v, --version
+- *required*: optional
+- *description*: adds a given version to the generated OpenAPI documentation
 
 ## Limitations
 

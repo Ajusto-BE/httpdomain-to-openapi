@@ -6,6 +6,8 @@ import io
 import os
 import sys
 import yaml
+import getopt
+import traceback
 
 
 @dataclass
@@ -331,14 +333,12 @@ def make_openapi_operation_object(view_docstring):
     return openapi_operation
 
 
-def build_openapi_dict(routes):
-    # TODO: Add support for title as parameter
-    # TODO: Add support for version as parameter
+def build_openapi_dict(routes, title='', version=''):
     openapi_dict = {
         'openapi': '3.0.0',
         'info': {
-            'title': 'My cool API!',
-            'version': '1',
+            'title': title,
+            'version': version,
         },
         'paths': {},
     }
@@ -361,11 +361,34 @@ def main():
     if len(sys.argv) < 2:
         print_usage_and_exit()
 
-    import_name = sys.argv[1]
-    app = import_object(import_name)
-    routes = get_routes(app)
-    openapi_dict = build_openapi_dict(routes)
-    print_openapi_dict(openapi_dict)
+    try:
+        opts, _ = getopt.getopt(
+            sys.argv[1:],
+            'a:t:v:',
+            ['app=', 'title=', 'version=']
+        )
+    except:
+        traceback.print_exc()
+    else:
+        import_name = ''
+        title = ''
+        version = ''
+
+        for opt, arg in opts:
+            if opt in ['-a', '--app']:
+                import_name = arg
+            elif opt in ['-t', '--title']:
+                title = arg
+            elif opt in ['-v', '--version']:
+                version = arg
+
+        if import_name != '':
+            app = import_object(import_name)
+            routes = get_routes(app)
+            openapi_dict = build_openapi_dict(routes, title, version)
+            print_openapi_dict(openapi_dict)
+        else:
+            print('Please provide the Flask app in the command! Example: --app app_example:app')
 
 
 if __name__ == '__main__':
