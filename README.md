@@ -3,6 +3,10 @@
 Generates OpenAPI documentation from code documented according to the
 [httpdomain syntax](https://sphinxcontrib-httpdomain.readthedocs.io/en/stable/).
 
+## Usage
+
+To do: fill in!
+
 ## Limitations
 
 This program does not cover certain Flask functionality such as
