@@ -119,8 +119,8 @@ def get_routes(app):
 
 def print_usage_and_exit():
     print('''
-        Usage: python httpdomain-to-openapi.py <flask_app_import_name>
-            e.g python httpdomain-to-openapi.py my_app:app
+        Usage: python httpdomain-to-openapi.py --app <flask_app_import_name> --title <title_for_documentation> --version <version_for_documentation>
+            e.g python httpdomain-to-openapi.py --app my_app:app --title '50 Five' --version v5.25.0
     ''')
     sys.exit(1)
 
@@ -358,37 +358,31 @@ def print_openapi_dict(openapi_dict):
 
 
 def main():
-    if len(sys.argv) < 2:
+    import_name = ''
+    title = ''
+    version = ''
+
+    opts, _ = getopt.getopt(
+        sys.argv[1:],
+        'a:t:v:',
+        ['app=', 'title=', 'version=']
+    )
+
+    for opt, arg in opts:
+        if opt in ['-a', '--app']:
+            import_name = arg
+        elif opt in ['-t', '--title']:
+            title = arg
+        elif opt in ['-v', '--version']:
+            version = arg
+
+    if import_name == '' or title == '' or version == '':
         print_usage_and_exit()
 
-    try:
-        opts, _ = getopt.getopt(
-            sys.argv[1:],
-            'a:t:v:',
-            ['app=', 'title=', 'version=']
-        )
-    except:
-        traceback.print_exc()
-    else:
-        import_name = ''
-        title = ''
-        version = ''
-
-        for opt, arg in opts:
-            if opt in ['-a', '--app']:
-                import_name = arg
-            elif opt in ['-t', '--title']:
-                title = arg
-            elif opt in ['-v', '--version']:
-                version = arg
-
-        if import_name != '':
-            app = import_object(import_name)
-            routes = get_routes(app)
-            openapi_dict = build_openapi_dict(routes, title, version)
-            print_openapi_dict(openapi_dict)
-        else:
-            print('Please provide the Flask app in the command! Example: --app app_example:app')
+    app = import_object(import_name)
+    routes = get_routes(app)
+    openapi_dict = build_openapi_dict(routes, title, version)
+    print_openapi_dict(openapi_dict)
 
 
 if __name__ == '__main__':
