@@ -187,6 +187,7 @@ def add_directive_to_openapi_operation(operation, directive):
             'name': directive.name,
             'in': 'path',
             'description': directive.body,
+            'required': True,
             'schema': {
                 'type': directive.type,
             },
