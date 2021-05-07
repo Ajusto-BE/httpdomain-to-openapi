@@ -14,7 +14,7 @@ python3 httpdomain-to-openapi.py --app app_example:app --title '50 Five' --versi
 **Command options** detailed:
 1. **-a, --app**
 - *type*: mendatory
-- *description*: indicates the Flask app for which to collect the endpoints that need to be documented according the OpenAPI Specification
+- *description*: indicates the Flask app for which to collect the endpoints that need to be documented in accordance with the OpenAPI Specification
 2. **-t, --title**
 - *type*: optional
 - *description*: adds a given title to the generated OpenAPI documentation
