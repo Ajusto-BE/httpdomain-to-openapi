@@ -344,11 +344,12 @@ def build_openapi_dict(routes, title='', version=''):
     }
 
     for method, paths, view_fn_name, view_docstring in routes:
-        for path in paths:
-            if path not in openapi_dict['paths']:
-                openapi_dict['paths'][path] = {}
-            openapi_dict['paths'][path][method.lower()] = \
-                make_openapi_operation_object(view_docstring)
+        if view_docstring:
+            for path in paths:
+                if path not in openapi_dict['paths']:
+                    openapi_dict['paths'][path] = {}
+                openapi_dict['paths'][path][method.lower()] = \
+                    make_openapi_operation_object(view_docstring)
 
     return openapi_dict
 
@@ -383,10 +384,6 @@ def main():
     routes = get_routes(app)
     openapi_dict = build_openapi_dict(routes, title, version)
     print_openapi_dict(openapi_dict)
-
-
-def test_function():
-    print('Ana added this temporary function!')
 
 
 if __name__ == '__main__':
