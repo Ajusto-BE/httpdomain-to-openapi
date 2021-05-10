@@ -1,4 +1,4 @@
-from setuptools import setup
+from setuptools import setup, find_packages
 
 
 with open('README.md', 'r') as fh:
@@ -13,5 +13,7 @@ setup(
     author='Phyramid Connections SRL',
     author_email="",
     long_description=long_description,
-    long_description_content_type='text/markdown'
+    long_description_content_type='text/markdown',
+    packages=['httpdomain_to_openapi'],
+    py_modules=find_packages('httpdomain_to_openapi')
 )
