@@ -8,7 +8,7 @@ Generates OpenAPI documentation from code documented according to the
 - Modify the path mentioned in APP_DIR variable from *httpdomain-to-openapi.py* file to match the location of the Flask app directory from your local machine
 - Run *httpdomain-to-openapi.py* file with Python
 ```
-python3 httpdomain-to-openapi.py --app app_example:app --title '50 Five' --version v5.25.0
+python3 httpdomain_to_openapi/httpdomain_to_openapi.py --app app_example:app --title '50 Five' --version v5.25.0
 ```
 
 **Command options** detailed:
