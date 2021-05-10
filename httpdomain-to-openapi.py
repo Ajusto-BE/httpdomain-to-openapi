@@ -385,6 +385,10 @@ def main():
     print_openapi_dict(openapi_dict)
 
 
+def test_function():
+    print('Ana added this temporary function!')
+
+
 if __name__ == '__main__':
     # APP_DIR = '../50five-nl-backend/'
     APP_DIR = '../docs-demo-openapi/'
