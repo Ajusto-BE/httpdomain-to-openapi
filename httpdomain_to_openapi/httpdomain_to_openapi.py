@@ -390,8 +390,8 @@ def test_function():
 
 
 if __name__ == '__main__':
-    # APP_DIR = '../50five-nl-backend/'
-    APP_DIR = '../docs-demo-openapi/'
+    APP_DIR = '../50five-nl-backend/'
+    # APP_DIR = '../docs-demo-openapi/'
     sys.path.insert(0, os.path.abspath(APP_DIR))
     os.chdir(APP_DIR)
     main()
