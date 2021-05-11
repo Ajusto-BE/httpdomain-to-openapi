@@ -17,7 +17,8 @@ class Directive:
     name: str
     body: str
 
-
+# NOTE: edit this to match the path to your app location
+APP_DIR = '../docs-demo-openapi/'
 PARAM_KINDS = ['param', 'parameter', 'arg', 'argument']
 QUERY_KINDS = ['queryparameter', 'queryparam', 'qparam', 'query']
 FORM_KINDS = ['formparameter', 'formparam', 'fparam', 'form']
@@ -387,8 +388,6 @@ def main():
 
 
 if __name__ == '__main__':
-    APP_DIR = '../50five-nl-backend/'
-    # APP_DIR = '../docs-demo-openapi/'
     sys.path.insert(0, os.path.abspath(APP_DIR))
     os.chdir(APP_DIR)
     main()
