@@ -16,9 +16,12 @@ class Directive:
     type: str
     name: str
     body: str
+    properties: list
+
 
 # NOTE: edit this to match the path to your app location
 APP_DIR = '../docs-demo-openapi/'
+DEBUG_OUTPUT = None
 PARAM_KINDS = ['param', 'parameter', 'arg', 'argument']
 QUERY_KINDS = ['queryparameter', 'queryparam', 'qparam', 'query']
 FORM_KINDS = ['formparameter', 'formparam', 'fparam', 'form']
@@ -160,7 +163,7 @@ def parse_directive(directive_line):
         return None
 
     # If we don't have a type, just default it to string
-    type = 'string'
+    _type = 'string'
 
     head = directive_line[first_colon + 1:second_colon]
     head_parts = head.split(' ')
@@ -168,7 +171,7 @@ def parse_directive(directive_line):
     if len(head_parts) == 2:
         kind, name = head_parts
     elif len(head_parts) == 3:
-        kind, type, name = head_parts
+        kind, _type, name = head_parts
     else:
         return None
 
@@ -176,9 +179,10 @@ def parse_directive(directive_line):
 
     directive = Directive(
         kind=kind,
-        type=type,
+        type=_type,
         name=name,
-        body=body
+        body=body,
+        properties=[],
     )
 
     return directive
@@ -306,12 +310,15 @@ def add_directive_to_openapi_operation(operation, directive):
 
 def make_openapi_operation_object(view_docstring):
     lines = prepare_docstring(view_docstring)
+
     directive_lines, non_directive_lines = split_list_by_function(
         lines, parse_directive
     )
-    directive_lines = directive_lines
+
     non_directive_lines = remove_start_and_end_empty_strings(non_directive_lines)
+
     summary_line = non_directive_lines[0]
+
     description_lines = remove_start_and_end_empty_strings(non_directive_lines[1:])
 
     openapi_operation = {
@@ -320,11 +327,15 @@ def make_openapi_operation_object(view_docstring):
     }
 
     # NOTE: You can use this for debugging.
-    if False:
+    global DEBUG_OUTPUT
+    if DEBUG_OUTPUT:
         print('\n'.join([str(d) for d in non_directive_lines]))
         print('--')
         print('\n'.join([str(d) for d in directive_lines]))
         print('------------------------------------')
+
+    # for d in directive_lines:
+    #     print(d.name, d.name.split('.'))
 
     for directive in directive_lines:
         openapi_operation = add_directive_to_openapi_operation(
@@ -366,13 +377,18 @@ def main():
 
     opts, _ = getopt.getopt(
         sys.argv[1:],
-        'a:t:v:',
-        ['app=', 'title=', 'version=']
+        'a:d:ddd:t:v:',
+        ['app=', 'app-dir=', 'debug', 'title=', 'version=']
     )
 
     for opt, arg in opts:
         if opt in ['-a', '--app']:
             import_name = arg
+        elif opt in ['-d', '--app-dir']:
+            app_dir = arg
+        elif opt in ['-ddd', '--debug']:
+            global DEBUG_OUTPUT
+            DEBUG_OUTPUT = True
         elif opt in ['-t', '--title']:
             title = arg
         elif opt in ['-v', '--version']:
@@ -381,6 +397,9 @@ def main():
     if import_name == '' or title == '' or version == '':
         print_usage_and_exit()
 
+    sys.path.insert(0, os.path.abspath(app_dir))
+    os.chdir(app_dir)
+
     app = import_object(import_name)
     routes = get_routes(app)
     openapi_dict = build_openapi_dict(routes, title, version)
@@ -388,6 +407,4 @@ def main():
 
 
 if __name__ == '__main__':
-    sys.path.insert(0, os.path.abspath(APP_DIR))
-    os.chdir(APP_DIR)
     main()
