@@ -7,13 +7,11 @@ from .cli import OPTS
 
 
 def main():
-    """The main function to bulding the OpenAPI doc for the app's API.
+    """The main function for building the OpenAPI doc.
 
-    Here starts by mapping the supporting frameworks and docstring styles that
-    can parse controller/view docs.
-
-    Then with the incoming parameters when executing this tool, will call into
-    the chosen modules to build the openapi doc.
+    It starts by mapping out the supported frameworks and docstring styles.
+    Then based on the parameters the tool was called with, it will then call
+    into the chosen modules to build the openapi document.
 
     The output will be done on `stdout`.
 

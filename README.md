@@ -3,7 +3,7 @@
 Generates an OpenAPI document from a python web framework's defined controllers/paths/view docstrings.
 
 
-## Supporting Frameworks
+## Supported Frameworks
 
 Currently only flask is provided, but any other python web framework can be added.
 

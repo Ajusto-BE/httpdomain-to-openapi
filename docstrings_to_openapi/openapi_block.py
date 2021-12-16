@@ -25,7 +25,7 @@ def make_openapi_route_object(view_docstring):
         summary,
         description,
         block
-    ) = _split_for_summary_description_openapi_doc(lines)
+    ) = _splits_for_summary_description_openapi_doc(lines)
 
     openapi_ = yaml.load('\n'.join(block), Loader=Loader) or {}
 
@@ -36,7 +36,7 @@ def make_openapi_route_object(view_docstring):
     }
 
 
-def _split_for_summary_description_openapi_doc(lines):
+def _splits_for_summary_description_openapi_doc(lines):
     """Splites a list of docstring lines between the summary, description,
     and other properties for an API route openapi spec.
 
