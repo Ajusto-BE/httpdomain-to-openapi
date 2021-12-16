@@ -6,14 +6,22 @@ with open('README.md', 'r') as fh:
 
 
 setup(
-    name='httpdomain-to-openapi',
-    version='0.0.1',
-    description='Generate OpenAPI format out of docstrings',
-    url='https://github.com/Phyramid/httpdomain-to-openapi.git',
+    name='docstrings-to-openapi',
+    version='0.1.0',
+    description='Generate OpenAPI document from docstrings',
+    url='https://github.com/SaffronSoftware/httpdomain-to-openapi.git',
     author='Phyramid Connections SRL',
     author_email="",
     long_description=long_description,
     long_description_content_type='text/markdown',
-    packages=['httpdomain_to_openapi'],
-    py_modules=find_packages('httpdomain_to_openapi')
+    packages=['docstrings_to_openapi'],
+    py_modules=find_packages('docstrings_to_openapi'),
+    install_requires=[
+        'PyYAML>=5.3.1',
+    ],
+    entry_points={
+        'console_scripts': [
+            'docstrings-to-openapi=docstrings_to_openapi.to_openapi:main'
+        ],
+    },
 )
