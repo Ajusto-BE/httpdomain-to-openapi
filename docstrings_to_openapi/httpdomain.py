@@ -29,7 +29,7 @@ class Directive:
     properties: list
 
 
-def split_list_by_function(l, func):
+def _split_list_by_function(l, func):
     """
     For each item in l, if func(l) is truthy, func(l) will be added to l1.
     Otherwise, l will be added to l2.
@@ -45,7 +45,7 @@ def split_list_by_function(l, func):
     return l1, l2
 
 
-def parse_directive(directive_line):
+def _parse_directive(directive_line):
     first_colon = directive_line.find(':')
     second_colon = directive_line.find(':', first_colon + 1)
 
@@ -78,7 +78,7 @@ def parse_directive(directive_line):
     return directive
 
 
-def add_directive_to_openapi_operation(operation, directive):
+def _add_directive_to_openapi_operation(operation, directive):
     if directive.kind in PARAM_KINDS:
         value = {
             'name': directive.name,
@@ -157,8 +157,13 @@ def add_directive_to_openapi_operation(operation, directive):
     	directive.kind in REQJSONARR_KINDS
     	or directive.kind in RESJSONARR_KINDS
     ):
-        print('Warning: reqjsonarr and resjsonarr are not supported, ignoring.')
-        print('  Please use reqjson and resjson.')
+        print(
+            """
+            Warning: reqjsonarr and resjsonarr are not supported, ignoring.
+                Please use reqjson and resjson.
+            """,
+            file=sys.stderr
+        )
         return operation
 
     elif directive.kind in REQHEADER_KINDS:
@@ -197,26 +202,45 @@ def add_directive_to_openapi_operation(operation, directive):
         return operation
 
     else:
-        print(f'Warning: Unknown directive kind {directive.kind}')
+        print(
+            f'Warning: Unknown directive kind {directive.kind}',
+            file=sys.stderr
+        )
         return operation
 
 
-def make_openapi_operation_object(view_docstring):
-    """
+def make_openapi_route_object(view_docstring):
+    """Creates the route's openapi object.
+
+    Parameters
+    ----------
+    view_docstring : str
+
+    Returns
+    -------
+    dict
+        summary : str
+        description : str
+        **paths : dict
+
     """
     from cli import OPTS
 
     lines = prepare_docstring(view_docstring)
 
-    directive_lines, non_directive_lines = split_list_by_function(
-        lines, parse_directive
+    directive_lines, non_directive_lines = _split_list_by_function(
+        lines, _parse_directive
     )
 
-    non_directive_lines = remove_start_and_end_empty_strings(non_directive_lines)
+    non_directive_lines = remove_start_and_end_empty_strings(
+        non_directive_lines
+    )
 
     summary_line = non_directive_lines[0]
 
-    description_lines = remove_start_and_end_empty_strings(non_directive_lines[1:])
+    description_lines = remove_start_and_end_empty_strings(
+        non_directive_lines[1:]
+    )
 
     openapi_operation = {
         'summary': summary_line,
@@ -234,11 +258,8 @@ def make_openapi_operation_object(view_docstring):
         print('\n'.join([str(d) for d in directive_lines]), file=sys.stderr)
         print('', file=sys.stderr)
 
-    # for d in directive_lines:
-    #     print(d.name, d.name.split('.'))
-
     for directive in directive_lines:
-        openapi_operation = add_directive_to_openapi_operation(
+        openapi_operation = _add_directive_to_openapi_operation(
             openapi_operation, directive
         )
 

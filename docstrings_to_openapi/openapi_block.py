@@ -17,6 +17,7 @@ def make_openapi_route_object(view_docstring):
         summary : str
         description : str
         **paths : dict
+
     """
     lines = prepare_docstring(view_docstring)
 

@@ -7,12 +7,21 @@ from cli import OPTS
 
 
 def main():
-    """
-    """
-    print(OPTS)
+    """The main function to bulding the OpenAPI doc for the app's API.
 
+    Here starts by mapping the supporting frameworks and docstring styles that
+    can parse controller/view docs.
+
+    Then with the incoming parameters when executing this tool, will call into
+    the chosen modules to build the openapi doc.
+
+    The output will be done on `stdout`.
+
+    Any prints, e.g. with `-d` `--debug` enabled will be output on `stderr`.
+
+    """
     from flask_routes import generate_flask_paths
-    from httpdomain import make_openapi_operation_object as httpdomain_parse
+    from httpdomain import make_openapi_route_object as httpdomain_parse
     from openapi_block import make_openapi_route_object as openapi_block_parse
 
     frameworks = {
@@ -25,7 +34,7 @@ def main():
     }
 
     openapi_doc = {
-        'openapi': '3.0.0',
+        'openapi': OPTS.openapi_spec,
         'info': {
             'title': OPTS.title,
             'version': OPTS.version,

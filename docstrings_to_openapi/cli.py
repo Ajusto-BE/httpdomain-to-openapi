@@ -1,4 +1,6 @@
 import argparse
+from pprint import pprint
+import sys
 
 parser = argparse.ArgumentParser()
 
@@ -50,6 +52,10 @@ parser.add_argument(
 )
 
 OPTS = parser.parse_args()
+
+if OPTS.debug:
+    print('Debug provided command parameters:', file=sys.stderr)
+    pprint(vars(OPTS), stream=sys.stderr)
 
 if __name__ == '__main__':
     "For testing the cli arguments using only this file"
