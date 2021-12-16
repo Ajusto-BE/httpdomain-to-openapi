@@ -13,7 +13,7 @@ Only `yaml` syntax is supported in these blocks, and `yaml` indentation rules ap
 
 Here's a following example using Flask as the route:
 
-```python
+````python
 @app.route('/api/neat/<int:_id>', methods=['PUT'])
 def update_neat_thing(_id):
     """Summary example of the route, Update a neat thing for an ID
@@ -61,7 +61,7 @@ def update_neat_thing(_id):
         response=json.dumps(data),
         status=200,
     )
-```
+````
 
 This will result in the following OpenAPI doc:
 
