@@ -2,8 +2,7 @@ import sys
 
 
 def prepare_docstring(s, tabsize=4):
-    """
-    Convert a docstring into lines of parseable reST.  Remove common leading
+    """Convert a docstring into lines of parseable reST.  Remove common leading
     indentation, where the indentation of a given number of lines (usually just
     one) is ignored.
 

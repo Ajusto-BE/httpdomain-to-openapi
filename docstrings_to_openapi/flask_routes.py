@@ -76,7 +76,7 @@ def generate_flask_paths(docstring_parse):
                 Each method of the url route
 
     """
-    from cli import OPTS
+    from .cli import OPTS
 
     sys.path.insert(0, os.path.abspath(OPTS.app_dir))
     os.chdir(OPTS.app_dir)

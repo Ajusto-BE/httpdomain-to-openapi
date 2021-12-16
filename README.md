@@ -1,6 +1,6 @@
 # docstrings-to-openapi
 
-Generates an OpenAPI document from a python web framework's defined controllers/paths/view docstring.
+Generates an OpenAPI document from a python web framework's defined controllers/paths/view docstrings.
 
 
 ## Supporting Frameworks
@@ -19,12 +19,32 @@ Currently only flask is provided, but any other python web framework can be adde
 * PyYAML
 
 
-## Usage
+## Install
+
+docstrings-to-openapi will most likely need to be installed in the app's virtualenv in order to run correctly.
+
+Since this is not on pypi, for the time being, it can be installed by cloning the project to your machine or using the pip feature from installing from a url:
+
+```
+$ git clone https://github.com/saffronsoftware/httpdomain-to-openapi.git
+# Remember to have your project's virtualenv activated
+(my-project-venv) $ pip install -e ./httpdomain-to-openapi
+```
+or
+```
+(my-project-env) $ pip install -e git+ssh://git@github.com/saffronsoftware/httpdomain-to-openapi.git
+```
+
+And once successfully installed, it can be ran:
+```
+(my-project-env) $ docstrings-to-openapi
+```
+
 
 ### Command Options
 
 ```
-usage: cli.py [-h] [-d] [-f {json,yaml}] [--openapi-spec OPENAPI_SPEC] [-s {httpdomain,openapi-block}] -t TITLE -v VERSION {flask} ...
+usage: docstrings-to-openapi [-h] [-d] [-f {json,yaml}] [--openapi-spec OPENAPI_SPEC] [-s {httpdomain,openapi-block}] -t TITLE -v VERSION {flask} ...
 
 positional arguments:
   {flask}
@@ -48,7 +68,7 @@ optional arguments:
 #### Flask
 
 ```
-usage: cli.py flask [-h] -a APP -b APP_DIR
+usage: docstrings-to-openapi flask [-h] -a APP -b APP_DIR
 
 optional arguments:
   -h, --help            show this help message and exit

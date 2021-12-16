@@ -1,7 +1,7 @@
 from dataclasses import dataclass
 import sys
 
-from utils import (
+from .utils import (
     prepare_docstring,
     remove_start_and_end_empty_strings
 )
@@ -30,8 +30,7 @@ class Directive:
 
 
 def _split_list_by_function(l, func):
-    """
-    For each item in l, if func(l) is truthy, func(l) will be added to l1.
+    """For each item in l, if func(l) is truthy, func(l) will be added to l1.
     Otherwise, l will be added to l2.
     """
     l1 = []

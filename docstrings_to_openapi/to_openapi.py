@@ -3,7 +3,7 @@ import sys
 
 import yaml
 
-from cli import OPTS
+from .cli import OPTS
 
 
 def main():
@@ -20,9 +20,9 @@ def main():
     Any prints, e.g. with `-d` `--debug` enabled will be output on `stderr`.
 
     """
-    from flask_routes import generate_flask_paths
-    from httpdomain import make_openapi_route_object as httpdomain_parse
-    from openapi_block import make_openapi_route_object as openapi_block_parse
+    from .flask_routes import generate_flask_paths
+    from .httpdomain import make_openapi_route_object as httpdomain_parse
+    from .openapi_block import make_openapi_route_object as openapi_block_parse
 
     frameworks = {
         'flask': generate_flask_paths,

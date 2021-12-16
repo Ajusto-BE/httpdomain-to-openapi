@@ -1,7 +1,7 @@
 import yaml
 from yaml import Loader
 
-from utils import prepare_docstring
+from .utils import prepare_docstring
 
 
 def make_openapi_route_object(view_docstring):
