@@ -48,7 +48,7 @@ def update_neat_thing(_id):
                             neat:
                                 type: string
             description: ''
-    \`\`\`
+   ```
 
     """
     data = {
