@@ -223,7 +223,7 @@ def make_openapi_route_object(view_docstring):
         **paths : dict
 
     """
-    from cli import OPTS
+    from .cli import OPTS
 
     lines = prepare_docstring(view_docstring)
 
