@@ -17,6 +17,10 @@ flask_parser.add_argument(
     help="The directory where the flask app source is",
     required=True,
 )
+flask_parser.add_argument(
+    '-c', '--components-file',
+    help="Include a components file with the generated OpenAPI doc",
+)
 
 parser.add_argument(
     '-d', '--debug', 

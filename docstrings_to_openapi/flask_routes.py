@@ -5,6 +5,9 @@ import os
 from pprint import pprint
 import sys
 
+import yaml
+from yaml import Loader
+
 
 def _clean_up_methods(methods):
     autoadded_methods = frozenset(['OPTIONS', 'HEAD'])
@@ -91,7 +94,17 @@ def generate_flask_paths(docstring_parse):
             if path not in collection:
                 collection[path] = {}
 
-            route_doc = docstring_parse(view_docstring)
+            try:
+                route_doc = docstring_parse(view_docstring)
+            except Exception as e:
+                print(file=sys.stderr)
+                print(
+                    '! There was an error trying parse for the following:',
+                    method, path, view_fn_name,
+                    file=sys.stderr
+                )
+                print(e, file=sys.stderr)
+                sys.exit(1)
 
             if OPTS.debug:
                 print('Debug for', method, path, file=sys.stderr)

@@ -68,13 +68,15 @@ optional arguments:
 #### Flask
 
 ```
-usage: docstrings-to-openapi flask [-h] -a APP -b APP_DIR
+usage: docstrings-to-openapi flask [-h] -a APP -b APP_DIR [-c COMPONENTS_FILE]
 
 optional arguments:
   -h, --help            show this help message and exit
   -a APP, --app APP     The flask app import name in python
   -b APP_DIR, --app-dir APP_DIR
                         The directory where the flask app source is
+  -c COMPONENTS_FILE, --components-file COMPONENTS_FILE
+                        Include a components file with the generated OpenAPI doc
 ```
 
 
